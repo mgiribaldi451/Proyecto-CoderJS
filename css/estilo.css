@@ -1,0 +1,61 @@
+body {
+    background-color: #00000052 !important;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    background-image: url("../imagenes/3D_Black_Square-HD_Widescreen_Wallpaper_1366x768.jpeg");
+    background-size:100%;
+}
+
+p{
+    color: #fff;
+    font-size: 20px;
+}
+.bg-card{
+    /*background-color: rgb(199, 18, 18);*/
+    opacity: 0.7;
+}
+.material-icons.md-light { 
+    color: rgba(255, 255, 255, 1); 
+    margin-right: 2%;
+    cursor: pointer;
+}
+.form{
+    margin: 20%;
+}
+
+.color{
+    color: #fff !important;
+    font-size: 20px;
+    background-color: azure;
+}
+.contarCarro{
+    color: #fff;
+}
+
+.prueba{
+    width: 25rem;
+    margin: 2%;
+}
+.items{
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between!important;
+    margin-top: 5%;
+}
+
+
+@media only screen and (min-width: 1400px) {
+
+    div{
+        width: 50%;
+    }   
+}
+
+@media only screen and (max-width: 1399px) and (min-width: 750px) {
+
+    div{
+        width: 70%;
+    }
+
+
+}
+
