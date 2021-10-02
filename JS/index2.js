@@ -1,3 +1,4 @@
+
 const productos = [
 
     {
@@ -135,7 +136,7 @@ const productos = [
 
 
 
-/*------------------------------ MVC ------------------------------*/
+
 class ProductoView {
 
     listarProductos(padre, data) {
@@ -157,7 +158,6 @@ class ProductoView {
       <span id="${data[i].id}" class="num"  > 1 </span>
       <button id="masButton${data[i].id}"class="btn btn-outline-info btn-block mas" onclick="sumarCant(${i})" > +  </button><br/><br/>
       <button id="add-button${data[i].id}" class="btn btn-outline-info btn-block" onclick="agregarAlCarrito(${i})" >Agregar</button>
-     
       </div>
      
       </div>
@@ -167,7 +167,7 @@ class ProductoView {
         }
 
         $(padre).html(html);
-       
+        //$(".btnComprar").click(callback);
 
     }
 
@@ -184,7 +184,7 @@ class ProductoView {
       <br>
       <p>precio: ${data[i].precio}<p/>
       <p>Cantidad de unidades: ${data[i].cant}<p/>
-      
+      <p>id: ${data[i].id}<p/>
       
       
     
@@ -208,7 +208,7 @@ class ProductoView {
     }
 
 }
-/*------------------------------ MVC ------------------------------*/
+
 class ProductoController {
 
     constructor() {
@@ -227,9 +227,7 @@ class ProductoController {
     }
     buzos() {
         const buzos = productos.filter(e => e.tipo === "buzos")
-       
         this.vista.listarProductos("#prod", buzos)
-        
 
     }
     camperas() {
@@ -265,7 +263,6 @@ class ProductoController {
 
 const app = new ProductoController();
 
-/*------------------------------ rutas del sitio ------------------------------*/
 
 const routes = [
     { path: '/', action: 'listar' },
@@ -327,7 +324,7 @@ $(window).on('hashchange', function () {
     router();
 });
 
-/*------------------------------ aumento del boton mas para agregar mas de una unidad ------------------------------*/
+
 function sumarCant(producto) {
     let tmp = productos[producto].id
     let contador = $(`#${tmp}`).html();
@@ -341,7 +338,6 @@ function sumarCant(producto) {
     }
 
 }
-/*------------------------------ restar unidad ------------------------------*/
 function restarCant(producto) {
     let tmp = productos[producto].id
     let contador = $(`#${tmp}`).html();
@@ -355,9 +351,9 @@ function restarCant(producto) {
     }
 
 }
-/*------------------------------ Agregar producto al carrito ------------------------------*/
+
 function agregarAlCarrito(producto) {
-    let tmp = productos[producto].id 
+    let tmp = productos[producto].id
     //productos[producto].cant=productos[producto].cant+1;
     let contador = $(`#${tmp}`).html();
     let count = $("#contar").html()
@@ -374,7 +370,7 @@ function agregarAlCarrito(producto) {
 
 }
 
-/*------------------------------ Vaciar carrito ------------------------------*/
+
 function vaciarCarrito(){
     localStorage.clear()
     alert("el carro esta vacio")

@@ -10,12 +10,12 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+  <div class="container-fluid">
 
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Mi tienda</a>
+                    <span class="navbar-brand">Mi tienda</span>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -24,29 +24,29 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
                             <li class="nav-item ">
-                                <a class="nav-link active" aria-current="page" href="#" onclick="home()">Home</a>
+                                <a class="nav-link active" aria-current="page" href="#/">Home</a>
 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#" onclick="renderItemMenu('menu')"
+                                <a class="nav-link active" aria-current="page" href="#/camisetas"
                                     id="menu">Camisetas</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  active" aria-current="page" href="#"
-                                    onclick="renderItemMenu('menu1')" id="menu1">Buzos</a>
+                                <a class="nav-link  active" aria-current="page" href="#/buzos"
+                                     id="menu1">Buzos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link  active" aria-current="page" href="#"
-                                    onclick="renderItemMenu('menu2')" id="menu2">Camperas</a>
+                                <a class="nav-link  active" aria-current="page" href="#/camperas"
+                                     id="menu2">Camperas</a>
                             </li>
 
 
                         </ul>
-                        <span class="contarCarro" id="contar">0</span><span
-                            class="material-icons md-light" onclick="renderCarrito()">shopping_cart</span>
+                        <span class="contarCarro" id="contar">0</span><a href="#/cart"><span
+                            class="material-icons md-light" >shopping_cart</span></a>
                         <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
-                            <button class="btn btn-outline-success" type="submit" id="searchButton">Search</button>
+                            <a href='#/search'><input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchInput">
+                            <button class="btn btn-outline-success" type="submit" id="searchButton" >Search</button></a>
                         </form>
                     </div>
                 </div>
@@ -57,12 +57,13 @@
         </div>
 
 
-    </div>
+  
 
 
     <script src="JS/bootstrap.min.js"></script>    
     <script src="JS/jquery.min.js"></script>
-    <script src="JS/index.js"></script>
+    <script type="text/javascript" src="productos.json"></script>
+    <script src="JS/index2.js"></script>
     
 </body>
 
