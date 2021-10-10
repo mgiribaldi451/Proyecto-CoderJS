@@ -142,21 +142,21 @@ class ProductoView {
         let html = '';
         let prods = []
         let i = 0
-        //for (const producto of data) 
-        for (let i = 0; i < data.length; i++) {
-            html += `<div class=" card bg-secondary bg-card " id="prod${data[i].id}">
+        for (const producto of data){ 
+        //for (let i = 0; i < data.length; i++) {
+            html += `<div class=" card bg-secondary bg-card " id="prod${producto.id}">
              <div class="card-body mx-auto">
-      <a href=${data[i].url}><img src=${data[i].url} alt="producto" border="0"  /></a>
+      <a href=${producto.url}><img src=${producto.url} alt="producto" border="0"  /></a>
       <br>
-      <p>precio: ${data[i].precio}<p/>
-      <p>Disponibles: ${data[i].stock}<p/>
+      <p>precio: ${producto.precio}<p/>
+      <p>Disponibles: ${producto.stock}<p/>
       
       
       
-      <button class="btn btn-outline-info btn-block menos" id="menosButton${data[i].id}" onclick="restarCant(${i})"  > - </button>
-      <span id="${data[i].id}" class="num"  > 1 </span>
-      <button id="masButton${data[i].id}"class="btn btn-outline-info btn-block mas" onclick="sumarCant(${i})" > +  </button><br/><br/>
-      <button id="add-button${data[i].id}" class="btn btn-outline-info btn-block" onclick="agregarAlCarrito(${i})" >Agregar</button>
+      <button class="btn btn-outline-info btn-block menos" id="menosButton${producto.id}" onclick="restarCant(${producto.id})"  > - </button>
+      <span id="${producto.id}" class="num"  > 1 </span>
+      <button id="masButton${producto.id}"class="btn btn-outline-info btn-block mas" onclick="sumarCant(${producto.id})" > +  </button><br/><br/>
+      <button id="add-button${producto.id}" class="btn btn-outline-info btn-block" onclick="agregarAlCarrito(${producto.id})" >Agregar</button>
      
       </div>
      
@@ -174,33 +174,30 @@ class ProductoView {
     listarCart(padre, data) {
 
         let html = '';
+      
 
-        console.log(`localStorage en listCart ${localStorage}`);
+        console.log(data);
 
         for (let i = 0; i < data.length; i++) {
-            html += `<div class=" card bg-secondary bg-card " id="prod${data[i].id}">
-             <div class="card-body mx-auto">
+            html += `<div class=" card bg-secondary bg-card  " id="prod${data[i].id}">
+             <div class="card-body mx-auto cart ">
       <a href=${data[i].url}><img src=${data[i].url} alt="producto" border="0"  /></a>
-      <br>
+      <br/>
       <p>precio: ${data[i].precio}<p/>
       <p>Cantidad de unidades: ${data[i].cant}<p/>
       
+      <button id="quitar-button${data[i].id}" class="btn btn-outline-info btn-block" onclick="quitarDelCarrito(${data[i].id})" )" >Quitar</button>
+      <button id="vaciar" class="btn btn-outline-info btn-block vaciarC" )"  onclick="vaciarCarrito()">Vaciar Carro</button>
       
+      </div>
+      </div>
       
-    
-      <button id="quitar-button${data[i].id}" class="btn btn-outline-info btn-block" )" >Quitar</button>
-      </div>
-     
-      </div>
-      <div>
-      <button id="vaciar" class="btn btn-outline-info btn-block" )"  onclick="vaciarCarrito()">Vaciar Carro</button>
-      </div>
-
       `
 
         }
-
         $(padre).html(html);
+     
+        
         //$(".btnComprar").click(callback);
         
 
@@ -240,7 +237,7 @@ class ProductoController {
 
     cart() {
         const prodsCart = []
-        console.log(prodsCart);
+        //console.log(prodsCart);
         let clave=""
         let temp
         for (let i = 0; i < localStorage.length; i++) {
@@ -249,6 +246,9 @@ class ProductoController {
             temp = localStorage.getItem(clave);
             temp = JSON.parse(temp);
             prodsCart[i] = temp
+            console.log(prodsCart);
+
+
         }
         this.vista.listarCart("#prod", prodsCart)
 
@@ -329,7 +329,8 @@ $(window).on('hashchange', function () {
 
 /*------------------------------ aumento del boton mas para agregar mas de una unidad ------------------------------*/
 function sumarCant(producto) {
-    let tmp = productos[producto].id
+    //let tmp = productos[producto].id
+    let tmp = producto
     let contador = $(`#${tmp}`).html();
     contador = parseInt(contador);
     contador += 1;
@@ -343,7 +344,8 @@ function sumarCant(producto) {
 }
 /*------------------------------ restar unidad ------------------------------*/
 function restarCant(producto) {
-    let tmp = productos[producto].id
+    //let tmp = productos[producto].id
+    let tmp = producto
     let contador = $(`#${tmp}`).html();
     contador = parseInt(contador);
     contador -= 1;
@@ -357,25 +359,49 @@ function restarCant(producto) {
 }
 /*------------------------------ Agregar producto al carrito ------------------------------*/
 function agregarAlCarrito(producto) {
-    let tmp = productos[producto].id 
+    //let tmp = productos[producto].id 
+    let tmp = producto
+    //console.log(tmp);
     //productos[producto].cant=productos[producto].cant+1;
     let contador = $(`#${tmp}`).html();
     let count = $("#contar").html()
+    let index= productos.findIndex(prod=>prod.id===producto.toString())
+    //console.log(index);
     if(tmp in localStorage){
-        productos[producto].cant+=parseInt(contador);
-        localStorage.setItem(`${productos[producto].id}`, JSON.stringify(productos[producto]));
+        productos[index].cant+=parseInt(contador);
+        localStorage.setItem(`${producto}`, JSON.stringify(productos[index]));
     }
     else{
         $("#contar").html(parseInt(count) + 1)
-        productos[producto].cant+=parseInt(contador);
-        localStorage.setItem(`${productos[producto].id}`, JSON.stringify(productos[producto]));
+        productos[index].cant+=parseInt(contador);
+        
+        localStorage.setItem(`${producto}`, JSON.stringify(productos[index]));
+        //console.log(localStorage);
     }
 
 
 }
 
+/*------------------------------ Quitar producto del carrito ------------------------------*/
+
+function quitarDelCarrito(producto){
+    let tmp=producto
+    let contador = $(`#${tmp}`).html();
+    let count = $("#contar").html()
+    let index= productos.findIndex(prod=>prod.id===producto.toString())
+    //console.log(index);
+    localStorage.removeItem(`${producto}`);
+    productos[index].cant=0;
+    $("#contar").html(parseInt(count) - 1)
+    app.cart();
+
+}
+
 /*------------------------------ Vaciar carrito ------------------------------*/
 function vaciarCarrito(){
+    for (const producto of productos){
+        producto.cant=0
+    }
     localStorage.clear()
     alert("el carro esta vacio")
     $("#contar").html(0)

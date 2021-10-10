@@ -32,8 +32,13 @@ p{
 }
 
 .prueba{
-    width: 25rem;
+    width: 15rem;
     margin: 2%;
+    
+}
+
+.cart{
+    width: 25%;
 }
 .items{
     display: flex !important;
@@ -47,7 +52,7 @@ p{
 
     div{
         width: 50%;
-    }   
+    }  
 }
 
 @media only screen and (max-width: 1399px) and (min-width: 750px) {
