@@ -476,5 +476,3 @@ function finCompra() {
 }
 
 
-
-localStorage.clear();
