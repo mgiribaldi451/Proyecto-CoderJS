@@ -1,3 +1,5 @@
+/*------------------------------ MVC Modelo ------------------------------*/
+/* Para simplificar se crea directamente el array de objetos */
 const productos = [
 
     {
@@ -133,30 +135,28 @@ const productos = [
 ]
 
 
-
-
-/*------------------------------ MVC ------------------------------*/
+/*------------------------------ MVC Vista ------------------------------*/
 class ProductoView {
 
     listarProductos(padre, data) {
         let html = '';
         let prods = []
         let i = 0
-        for (const producto of data){ 
-        //for (let i = 0; i < data.length; i++) {
-            html += `<div class=" card bg-secondary bg-card " id="prod${producto.id}">
+        for (const producto of data) {
+            //for (let i = 0; i < data.length; i++) {
+            html += `<div class=" card bg-secondary bg-card item" id="prod${producto.id}">
              <div class="card-body mx-auto">
       <a href=${producto.url}><img src=${producto.url} alt="producto" border="0"  /></a>
       <br>
-      <p>precio: ${producto.precio}<p/>
+      <p>Precio: $${producto.precio}<p/>
       <p>Disponibles: ${producto.stock}<p/>
       
       
       
-      <button class="btn btn-outline-info btn-block menos" id="menosButton${producto.id}" onclick="restarCant(${producto.id})"  > - </button>
+      <button class="btn btn-outline-info btn-block menos btn-sm" id="menosButton${producto.id}" onclick="restarCant(${producto.id})"  > - </button>
       <span id="${producto.id}" class="num"  > 1 </span>
-      <button id="masButton${producto.id}"class="btn btn-outline-info btn-block mas" onclick="sumarCant(${producto.id})" > +  </button><br/><br/>
-      <button id="add-button${producto.id}" class="btn btn-outline-info btn-block" onclick="agregarAlCarrito(${producto.id})" >Agregar</button>
+      <button id="masButton${producto.id}"class="btn btn-outline-info btn-block mas btn-sm" onclick="sumarCant(${producto.id})" > +  </button><br/><br/>
+      <button id="add-button${producto.id}" class="btn btn-outline-info btn-block" onclick="agregarAlCarrito(${producto.id})" >Agregar al carrito</button>
      
       </div>
      
@@ -167,45 +167,98 @@ class ProductoView {
         }
 
         $(padre).html(html);
-       
+
 
     }
 
     listarCart(padre, data) {
 
         let html = '';
-      
-
-        console.log(data);
+        let total=0;
 
         for (let i = 0; i < data.length; i++) {
-            html += `<div class=" card bg-secondary bg-card  " id="prod${data[i].id}">
-             <div class="card-body mx-auto cart ">
-      <a href=${data[i].url}><img src=${data[i].url} alt="producto" border="0"  /></a>
-      <br/>
-      <p>precio: ${data[i].precio}<p/>
-      <p>Cantidad de unidades: ${data[i].cant}<p/>
+            html += `<div class=" card bg-secondary bg-card text-center cart item  "  id="prod${data[i].id}">
+             <div class="card-body mx-auto   ">
+      <a href=${data[i].url}><img class=" imgCart card-img-top" src=${data[i].url} alt="producto" border="0"  /></a>
       
-      <button id="quitar-button${data[i].id}" class="btn btn-outline-info btn-block" onclick="quitarDelCarrito(${data[i].id})" )" >Quitar</button>
-      <button id="vaciar" class="btn btn-outline-info btn-block vaciarC" )"  onclick="vaciarCarrito()">Vaciar Carro</button>
-      
+      <p class="card-text ">precio: ${data[i].precio*data[i].cant}<p/>
+      <p class="card-text ">Unidades: ${data[i].cant}<p/>
+      <button id="quitar-button${data[i].id}" class="btn btn-outline-info btn-block btn-sm" onclick="quitarDelCarrito(${data[i].id})" )" >Quitar</button>   
       </div>
       </div>
       
       `
-
+            total+=data[i].precio*data[i].cant;
         }
+        let button = `<div  class="container botones" id="boton">
+                <button id="vaciar" class="btn btn-outline-info btn-block btn-sm"  onclick="vaciarCarrito()">Vaciar Carrito</button>
+                <a href='#/finalizar'><button id="terminarCompra" class="btn btn-outline-info btn-block btn-sm"  >Finalizar Compra $${total}</button></a>
+                </div>`;
+        $(padre).html(html + button);
+    }
+
+    form(padre) {
+
+        let html =` <form class="formulario" onsubmit="return finCompra()">
+        <input
+            type='text'
+            placeholder='nombre'
+            name='nombre' 
+            id="nombre"           
+        /><br/>
+        <input
+            type='text'
+            placeholder='telefono'
+            name='telefono'
+            id='tel'          
+        /><br/>
+        <input
+            type='email'
+            placeholder='email'
+            name='email'
+            pattern="+@\.com"
+            id='correo'
+            
+        /><br/>
+        <input
+        type='text'
+        placeholder='Direccion '
+        name='direccion'
+        id='dir'
+    /><br/>
+        <button class="btn btn-outline-info btn-block" type="submit">Terminar Compra</button>
+    </form>`;
+
         $(padre).html(html);
-     
-        
-        //$(".btnComprar").click(callback);
-        
 
 
     }
 
+    finForm(padre , total){
+        let html=
+        `<div class=" card bg-secondary bg-card text-center  item  ">
+             <div class="card-body mx-auto   ">
+             <p class="card-title"><h4 class="titulo">Compra Exitosa!</h4></p>
+      <p class="card-text ">Nombre: ${$('#nombre').val()}<p/>
+      <p class="card-text ">Telefono: ${$('#tel').val()}<p/>
+      <p class="card-text ">Email: ${$('#correo').val()}<p/>       
+      <p class="card-text ">Direccion: ${$('#dir').val()}<p/>
+      <p class="card-text ">Total: ${total}<p/>  
+      </div>
+      </div>`;
+      let button = `<div  class="container botones" id="botonFin">;
+      <a href='#/'><button id="volver" class="btn btn-outline-info btn-block btn-sm">Seguir comprando</button></a>
+      </div>`;
+      $(padre).html(html+button);
+      localStorage.clear();
+      $("#contar").html(0);
+
+
+    }
+
+
 }
-/*------------------------------ MVC ------------------------------*/
+/*------------------------------ MVC Controller ------------------------------*/
 class ProductoController {
 
     constructor() {
@@ -214,49 +267,48 @@ class ProductoController {
 
     list() {
 
-        this.vista.listarProductos("#prod", productos)
+        this.vista.listarProductos("#prod", productos);
     }
 
     camisetas() {
-        const camisetas = productos.filter(e => e.tipo === "camisetas")
-        this.vista.listarProductos("#prod", camisetas)
-
+        const camisetas = productos.filter(e => e.tipo === "camisetas");
+        this.vista.listarProductos("#prod", camisetas);
     }
+
     buzos() {
-        const buzos = productos.filter(e => e.tipo === "buzos")
-       
-        this.vista.listarProductos("#prod", buzos)
-        
-
+        const buzos = productos.filter(e => e.tipo === "buzos");
+        this.vista.listarProductos("#prod", buzos);
     }
-    camperas() {
-        const camperas = productos.filter(e => e.tipo === "camperas")
-        this.vista.listarProductos("#prod", camperas)
 
+    camperas() {
+        const camperas = productos.filter(e => e.tipo === "camperas");
+        this.vista.listarProductos("#prod", camperas);
     }
 
     cart() {
-        const prodsCart = []
-        //console.log(prodsCart);
-        let clave=""
-        let temp
+        const prodsCart = [];
+        let clave = "";
+        let temp;
         for (let i = 0; i < localStorage.length; i++) {
             clave = localStorage.key(i);
-           
             temp = localStorage.getItem(clave);
             temp = JSON.parse(temp);
-            prodsCart[i] = temp
-            console.log(prodsCart);
-
-
-        }
-        this.vista.listarCart("#prod", prodsCart)
+            prodsCart[i] = temp;
+        };
+        this.vista.listarCart("#prod", prodsCart);
 
     }
     search(prods) {
-        const prueba = productos.filter(e => e.nombre.includes(prods.toLowerCase()))
+        const prueba = productos.filter(e => e.nombre.includes(prods.toLowerCase()));
+        this.vista.listarProductos("#prod", prueba);
+    }
 
-        this.vista.listarProductos("#prod", prueba)
+    finalizar(){
+        this.vista.form("#prod");
+    }
+
+    finCompra(total){
+        this.vista.finForm("#prod", total);
 
     }
 
@@ -273,7 +325,9 @@ const routes = [
     { path: '/buzos', action: 'buzos' },
     { path: '/camperas', action: 'camperas' },
     { path: '/cart', action: 'cart' },
-    { path: '/search', action: 'search' }
+    { path: '/search', action: 'search' },
+    { path: '/finalizar', action: 'finalizar' },
+    { path: '/finForm', action: 'finForm' }
 ];
 
 const ErrorComponent = (padre) => {
@@ -312,6 +366,12 @@ const router = () => {
             })
 
             break;
+        case 'finalizar':
+            app.finalizar();
+            break;
+        case 'envioForm':
+                app.finForm();
+                break;
         default:
             ErrorComponent('#prod')
             break;
@@ -329,8 +389,7 @@ $(window).on('hashchange', function () {
 
 /*------------------------------ aumento del boton mas para agregar mas de una unidad ------------------------------*/
 function sumarCant(producto) {
-    //let tmp = productos[producto].id
-    let tmp = producto
+    let tmp = producto;
     let contador = $(`#${tmp}`).html();
     contador = parseInt(contador);
     contador += 1;
@@ -339,13 +398,12 @@ function sumarCant(producto) {
     }
     else {
         $(`#${tmp}`).html(productos[producto].stock);
-    }
+    };
 
 }
-/*------------------------------ restar unidad ------------------------------*/
+/*------------------------------ restar unidad para agregar al carrito ------------------------------*/
 function restarCant(producto) {
-    //let tmp = productos[producto].id
-    let tmp = producto
+    let tmp = producto;
     let contador = $(`#${tmp}`).html();
     contador = parseInt(contador);
     contador -= 1;
@@ -354,60 +412,69 @@ function restarCant(producto) {
     }
     else {
         $(`#${tmp}`).html(1);
-    }
+    };
 
 }
+
 /*------------------------------ Agregar producto al carrito ------------------------------*/
 function agregarAlCarrito(producto) {
-    //let tmp = productos[producto].id 
-    let tmp = producto
-    //console.log(tmp);
-    //productos[producto].cant=productos[producto].cant+1;
+    let tmp = producto;
     let contador = $(`#${tmp}`).html();
-    let count = $("#contar").html()
-    let index= productos.findIndex(prod=>prod.id===producto.toString())
-    //console.log(index);
-    if(tmp in localStorage){
-        productos[index].cant+=parseInt(contador);
+    let count = $("#contar").html();
+    let index = productos.findIndex(prod => prod.id === producto.toString());
+    if (tmp in localStorage) {
+        productos[index].cant += parseInt(contador);
         localStorage.setItem(`${producto}`, JSON.stringify(productos[index]));
     }
-    else{
+    else {
         $("#contar").html(parseInt(count) + 1)
-        productos[index].cant+=parseInt(contador);
-        
-        localStorage.setItem(`${producto}`, JSON.stringify(productos[index]));
-        //console.log(localStorage);
-    }
+        productos[index].cant += parseInt(contador);
 
+        localStorage.setItem(`${producto}`, JSON.stringify(productos[index]));
+    }
 
 }
 
 /*------------------------------ Quitar producto del carrito ------------------------------*/
 
-function quitarDelCarrito(producto){
-    let tmp=producto
-    let contador = $(`#${tmp}`).html();
-    let count = $("#contar").html()
-    let index= productos.findIndex(prod=>prod.id===producto.toString())
-    //console.log(index);
+function quitarDelCarrito(producto) {
+    let count = $("#contar").html();
+    let index = productos.findIndex(prod => prod.id === producto.toString());
     localStorage.removeItem(`${producto}`);
-    productos[index].cant=0;
-    $("#contar").html(parseInt(count) - 1)
+    productos[index].cant = 0;
+    $("#contar").html(parseInt(count) - 1);
     app.cart();
 
 }
 
 /*------------------------------ Vaciar carrito ------------------------------*/
-function vaciarCarrito(){
-    for (const producto of productos){
-        producto.cant=0
-    }
-    localStorage.clear()
-    alert("el carro esta vacio")
-    $("#contar").html(0)
-    app.cart()
-
+function vaciarCarrito() {
+    for (const producto of productos) {
+        producto.cant = 0;
+    };
+    localStorage.clear();
+    $("#contar").html(0);
+    app.cart();
 }
 
 
-localStorage.clear()
+function finCompra() {
+    const prodsCart = [];
+    let total=0;
+    let clave = "";
+    let temp;
+    for (let i = 0; i < localStorage.length; i++) {
+        clave = localStorage.key(i);
+        temp = localStorage.getItem(clave);
+        temp = JSON.parse(temp);
+        prodsCart[i] = temp;
+        total+=prodsCart[i].precio*prodsCart[i].cant;
+        temp=productos.findIndex(prod=>prod.id===prodsCart[i].id.toLowerCase());
+        productos[temp].stock-=prodsCart[i].cant;
+    };
+    app.finCompra(total);     
+}
+
+
+
+localStorage.clear();

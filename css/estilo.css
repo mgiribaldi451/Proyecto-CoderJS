@@ -7,7 +7,10 @@ body {
 
 p{
     color: #fff;
-    font-size: 20px;
+    font-size: 70%;
+}
+.titulo{
+    color: #fff;
 }
 .bg-card{
     /*background-color: rgb(199, 18, 18);*/
@@ -31,34 +34,52 @@ p{
     color: #fff;
 }
 
-.prueba{
+/*.prueba{
     width: 15rem;
     margin: 2%;
     
+}*/
+.item{
+    margin-top: 5%;
 }
-
+.imgCart{
+    width: 20%;
+    height: 25%;
+}
 .cart{
-    width: 25%;
+    width: 15rem !important;
+    height: 15rem !important;
+    
+}
+.botones{
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content:center!important;
+    margin-top: 5%;
+
 }
 .items{
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: space-between!important;
+    justify-content: space-evenly!important;
     margin-top: 5%;
 }
 
+.formulario{
+    margin-top: 5%;
+}
 
 @media only screen and (min-width: 1400px) {
 
     div{
-        width: 50%;
+        width: 40%;
     }  
 }
 
 @media only screen and (max-width: 1399px) and (min-width: 750px) {
 
     div{
-        width: 70%;
+        width: 30%;
     }
 
 
